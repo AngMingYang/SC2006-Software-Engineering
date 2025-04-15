@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congestion Report</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header>
+    <img src="{{ url_for('static', filename='Apollo_11_icon.jpg') }}" alt="Apollo 11 Icon" class="apollo-icon">
+    <h1>Monthly Travel Report</h1>
+</header>
+
+<main>
+    <form method="POST" class="form-container">
+        <div class="form-group">
+            <label for="line">Select Discrepancies Lines:</label>
+            <select name="line" id="line">
+                {% for l in ['ALL', 'BP', 'CC', 'DT', 'EW', 'NE', 'NS', 'TE'] %}
+                    <option value="{{ l }}" {% if l == line %}selected{% endif %}>{{ l }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="day_type">Select Traffic Type:</label>
+            <select name="day_type" id="day_type">
+                {% for d in ['WEEKDAY', 'WEEKENDS/HOLIDAY'] %}
+                    <option value="{{ d }}" {% if d == day_type %}selected{% endif %}>{{ d }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="time_per_hour">Select Hour of the Day:</label>
+            <select name="time_per_hour" id="time_per_hour">
+                <option value="">All</option>
+                {% for hour in range(24) %}
+                    <option value="{{ hour | string }}" {% if time_per_hour == hour | string %}selected{% endif %}>{{ hour | string }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit">Generate Report</button>
+    </form>
+
+    <div class="report">
+        <h3>📅 Report Summary</h3>
+        <p><strong>Day Type:</strong> {{ day_type }}</p>
+        <p><strong>Total Tap-Ins:</strong> {{ total_tap_in }}</p>
+    </div>
+
+    <h3>📊 Monthly Tap-In Proportions</h3>
+    <ul>
+        {% for l, p in month_proportions.items() %}
+        <center><p>{{ l }}: {{ p }}</p></center>
+        {% endfor %}
+    </ul>
+
+    <h3>🚉 Top 5 Busiest Stations (Tap-Ins) Last Month's Data</h3>
+    <div class="table-container">
+        <table>
+            <tr><th>Rank</th><th>Station Code</th><th>Total Tap-Ins</th></tr>
+            {% for station, count in top_5_busy[0] %}  <!-- Top 5 Tap-Ins -->
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ station }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <h3>🚉 Top 5 Busiest Stations (Tap-Outs) Last Month's Data  </h3>
+    <div class="table-container">
+        <table>
+            <tr><th>Rank</th><th>Station Code</th><th>Total Tap-Outs</th></tr>
+            {% for station, count in top_5_busy[1] %}  <!-- Top 5 Tap-Outs -->
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ station }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- First Graph Section -->
+    <h3>📈 Traffic Distribution Graph ({{ day_type }}) , Cumulative Tap_in - Cumulative Tap_out</h3>
+    {% if plot_url %}
+        <img src="data:image/png;base64,{{ plot_url }}" alt="Congestion Graph">
+    {% else %}
+        <p>Sorry, the graph could not be generated. Please try again later.</p>
+    {% endif %}
+
+    <!-- Second Graph Section -->
+    <h3>📉 Tap-In vs Tap-Out Discrepancies</h3>
+    {% if plot_url2 %}
+        <img src="data:image/png;base64,{{ plot_url2 }}" alt="Tap-In vs Tap-Out Discrepancies">
+    {% else %}
+        <p>Sorry, the discrepancy graph could not be generated. Please try again later.</p>
+    {% endif %}
+
+    <div class="back-button-container">
+        <a href="{{ url_for('lta_home') }}" class="button">Return to LTA Home</a>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; SC2006 Group 1</p>
+    <a href="{{ url_for('logout') }}" style="color: white;">Logout</a>
+</footer>
+
+</body>
+</html>

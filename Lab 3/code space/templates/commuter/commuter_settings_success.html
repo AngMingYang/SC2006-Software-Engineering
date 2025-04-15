@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings Update Success</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header> 
+    <img src="{{ url_for('static', filename='Apollo_11_icon.jpg') }}" alt="Apollo 11 Icon" class="apollo-icon">
+    <h1>Settings Updated Successfully!</h1>
+</header>
+
+<main>
+    <div class="success-message">
+        <h2>Your details have been successfully updated.</h2>
+        <p>Thank you for updating your settings. You can now go back to your commuter dashboard.</p>
+        
+        <div class="buttons">
+            <a href="{{ url_for('commuter_home') }}" class="button go-back-btn">Go Back to Dashboard</a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; SC2006 Group 1</p>
+</footer>
+
+</body>
+</html>

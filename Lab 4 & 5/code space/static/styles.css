@@ -1,0 +1,287 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Header Styling */
+header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    position: relative; /* Ensures absolute positioning inside */
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-left: 80px; /* Adjusted to allow space for icon */
+}
+
+.apollo-icon {
+    height: 75px;
+    width: 75px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    border-radius: 25%;
+}
+
+/* Main content styling */
+main {
+    padding: 20px;
+    text-align: center;
+}
+
+.welcome p {
+    margin-bottom: 20px; /* Add space below the text */
+}
+
+/* Form container styling */
+.form-container {
+    width: 50%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Form elements */
+.form-group {
+    margin-bottom: 20px; /* Add space between form elements */
+}
+
+label {
+    margin-bottom: 8px; /* Add space below the label */
+}
+
+select {
+    width: 100%; /* Make dropdown take up full width */
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Buttons */
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px; /* Add space above the button */
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Back button styling */
+.back-button-container {
+    margin-top: 20px;
+}
+
+a.button {
+    display: inline-block;
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+a.button:hover {
+    background-color: #34495e;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+/* Sort the dropdown list items */
+select option {
+    padding: 5px;
+}
+
+/* MRT map styling */
+.mrt-map-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.mrt-map {
+    width: 100%; /* Make the image as wide as the container */
+    max-width: 1500px; /* Limit the max width if it gets too big */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Table Styling */
+.table-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 80%;
+    text-align: center;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Form Styling */
+.line-form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.line-form select {
+    padding: 8px;
+    margin-right: 10px;
+}
+
+.update-btn, .predict-btn {
+    padding: 8px 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.update-btn:hover, .predict-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Prediction Section Styling */
+.prediction-section {
+    margin-top: 30px;
+}
+
+.data-output {
+    white-space: pre-wrap;  /* Keeps formatting for the predicted data */
+}
+
+/* General Text Styling */
+h2, h3 {
+    text-align: center;
+    color: #333;
+}
+
+h4 {
+    margin-top: 20px;
+    color: #555;
+}
+
+/* Graph Image Styling */
+.graph-img {
+    width: 100%;  /* Make the graph image responsive */
+    max-width: 800px;  /* Limit maximum width */
+    height: auto;  /* Maintain aspect ratio */
+    margin: 20px auto;  /* Center the graph */
+}
+
+/* Spacing between report sections */
+.report, .table-container {
+    margin-top: 30px;
+}
+
+
+
+
+/* Centered Page Layout */
+.centered-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f7f7f7;
+}
+
+.centered-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 500px;
+}
+
+.centered-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.centered-form p {
+    text-align: center;
+}
+
+.centered-form h1 {
+    text-align: center;
+}
+
+
+
+
+
+/* Reset Password Form Styling */
+.reset-password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.reset-password-form label {
+    font-weight: bold;
+}
+
+.reset-password-form input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.reset-password-form button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.reset-password-form button:hover {
+    background-color: #0056b3;
+}
+

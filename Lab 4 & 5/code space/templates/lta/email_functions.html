@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Functions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header>
+    <img src="{{ url_for('static', filename='Apollo_11_icon.jpg') }}" alt="Apollo 11 Icon" class="apollo-icon">
+    <h1>Email Notifications</h1>
+</header>
+
+<main>
+    <div class="content">
+        <h3>Send Notifications</h3>
+        <p>Manage and send emails to commuters regarding important updates.</p>
+
+        <!-- Email Functions Form -->
+        <div style="display: flex; justify-content: center; margin-top: 20px;">
+            <form method="POST" style="display: flex; flex-direction: column; gap: 20px;">
+
+                <!-- Threshold Email Button -->
+                <button type="submit" name="send_threshold_email">
+                    Email by Previous Month's Threshold Percentage
+                </button>
+
+                <!-- MRT Line Dropdown -->
+                <label for="line_code"><strong>Select MRT Line:</strong></label>
+                <select name="line_code" id="line_code">
+                    <option value="EWL" selected>East West Line (EWL)</option>
+                    <option value="NSL">North South Line (NSL)</option>
+                    <option value="NEL">North East Line (NEL)</option>
+                    <option value="CCL">Circle Line (CCL)</option>
+                    <option value="DTL">Downtown Line (DTL)</option>
+                    <option value="TEL">Thomson-East Coast Line (TEL)</option>
+                    <option value="JEL">Jurong Region Line (JEL)</option>
+                    
+                    <option value="BPL">Bukit Panjang LRT (BPL)</option>
+                    
+                </select>
+
+                <!-- Congestion Mode Dropdown -->
+                <label for="mode"><strong>Select Congestion Mode:</strong></label>
+                <select name="mode" id="mode">
+                    <option value="h" selected>High</option>
+                    <option value="m">Medium</option>
+                    <option value="l">Low</option>
+                </select>
+
+                <!-- Realtime Email Button -->
+                <button type="submit" name="send_realtime_email">
+                    Email All by Real-Time Congestion
+                </button>
+
+            </form>
+        </div>  
+    </div>
+
+    <!-- Plot Control Form -->
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+        <form method="POST" style="display: flex; flex-direction: column; gap: 10px;">
+            <label for="line"><strong>Select MRT Line for Plot:</strong></label>
+            <select name="line" id="line">
+                {% for code, name in [("EWL", "East West Line"), ("NSL", "North South Line"), ("NEL", "North East Line"), ("CCL", "Circle Line"), ("DTL", "Downtown Line"), ("TEL", "Thomson-East Coast Line"), ("JEL", "Jurong Region Line"),  ("BPL", "Bukit Panjang LRT")] %}
+                    <option value="{{ code }}" {% if line == code %}selected{% endif %}>{{ name }} ({{ code }})</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit" name="plot_update">Update Plot</button>
+        </form>
+    </div>
+
+    {% if plot_base64 %}
+        <div class="graph-section">
+            <h3>Real-Time Crowd Levels</h3>
+            <img src="data:image/png;base64,{{ plot_base64 }}" alt="Real-Time Crowd Levels" class="mrt-map">
+        </div>
+    {% else %}
+        <div class="error-message">
+            <p style="color: red; font-weight: bold;">Error: Unable to load the congestion plot. Please try again later.</p>
+        </div>
+    {% endif %}
+
+    <div class="button-container">
+        <a href="{{ url_for('lta_home') }}" class="button">Return to LTA Home</a>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; SC2006 Group 1</p>
+    <a href="{{ url_for('logout') }}" style="color: white;">Logout</a>
+</footer>
+
+<!-- Auto-refresh script -->
+<script>
+    const eventSource = new EventSource("/sse/congestion");
+
+    eventSource.onmessage = function(event) {
+        if (event.data === "refresh") {
+            console.log("Received refresh event from server (LTA email)");
+            location.reload();  // Just reload everything
+        }
+    };
+
+    eventSource.onerror = function(err) {
+        console.error("SSE error", err);
+    };
+</script>
+
+
+
+<p>Refresh seed: <span id="refresh-seed">{{ range(100000, 999999) | random }}</span></p>
+</body>
+</html>

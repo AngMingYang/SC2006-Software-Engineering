@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commuter Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header> 
+    <img src="{{ url_for('static', filename='Apollo_11_icon.jpg') }}" alt="Apollo 11 Icon" class="apollo-icon">
+    <h1>Commuter Dashboard</h1>
+</header>
+
+<main>
+    <div class="welcome">
+        <h2>Welcome {{ user }}!</h2>
+        <p>Your personalized travel planner.</p>
+    </div>
+
+    <div class="dashboard">
+        <!-- User Settings -->
+        <div class="card">
+            <h3>User Settings</h3>
+            <p>Manage your profile and preferences.</p>
+            <a href="{{ url_for('commuter_settings') }}">Go to Settings</a>
+        </div>
+
+        <!-- User History -->
+        <div class="card">
+            <h3>Travel History</h3>
+            <p>View your past trips and commute patterns.</p>
+            <a href="{{ url_for('commuter_history') }}">View History</a>
+        </div>
+
+        <!-- Real-Time Congestion -->
+        <div class="card">
+            <h3>Real-Time Congestion</h3>
+            <p>Check current congestion levels on your route.</p>
+            <a href="{{ url_for('real_time_congestion') }}">Check Now</a>
+        </div>
+
+        <!-- Historical Data -->
+        <div class="card">
+            <h3>Historical Data</h3>
+            <p>Analyze congestion trends over time.</p>
+            <a href="{{ url_for('historical_data') }}">View Data</a>
+        </div>
+
+        <!-- Route Prediction -->
+        <div class="card">
+            <h3>Route Prediction</h3>
+            <p>Plan your best route based on Algorithms and Data.</p>
+            <a href="{{ url_for('route_predictions_input') }}">Get Predictions</a>
+        </div>
+    </div>
+    <p> </p>
+    <div class="logout-container">
+        <a href="{{ url_for('logout') }}" class="button logout-btn">Logout</a>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; SC2006 Group 1</p>
+</footer>
+
+</body>
+</html>

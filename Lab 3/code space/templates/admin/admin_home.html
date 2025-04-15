@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header>
+    <img src="{{ url_for('static', filename='Apollo_11_icon.jpg') }}" alt="Apollo 11 Icon" class="apollo-icon">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, Admin {{ username }}</p>
+</header>
+
+<main>
+    <div class="admin-content">
+        <div class="card">
+            <h3>Reset User Password</h3>
+            <p>Reset any user's password directly without OTP.</p>
+            <a href="{{ url_for('admin_reset_user_password') }}">Go to Reset Password</a>
+        </div>
+
+        <div class="card">
+            <h3>Trigger Refresh</h3>
+            <p>Force a refresh for all users dashboards.</p>
+            <form method="POST" action="{{ url_for('trigger_refresh') }}">
+                <button type="submit" class="update-btn">Trigger Now</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Update ALL databases and values and trigger refreshes</h3>
+            <p>This will fetch and update all train line data from the APIs and refresh commuter dashboards accordingly.</p>
+            <form method="POST" action="{{ url_for('update_and_trigger_refresh') }}">
+                <button type="submit" class="update-btn">Run Update and Refresh</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; SC2006 Group 1</p>
+    <a href="{{ url_for('logout') }}" style="color: white;">Logout</a>
+</footer>
+
+</body>
+</html>

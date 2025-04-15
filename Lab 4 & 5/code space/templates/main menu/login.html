@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<img src="{{ url_for('static', filename='Apollo_11_icon.jpg') }}" alt="Apollo 11 Icon" 
+     style="height: 100px; width: 100px; position: absolute; left: 10px; top: 10px; border-radius: 25%;">
+<h1 style="position: absolute; left: 70px; top: 10px;"></h1>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+        }
+
+        /* Left Section - Login Form */
+        .left {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .left h1 {
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 350px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .links {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .links a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Right Section - MRT Image */
+        .right {
+            width: 50%;
+            background: url("{{ url_for('static', filename='train_design.jpg') }}") no-repeat center center/cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Side: Login Form -->
+        <div class="left">
+            <div class="form-container">
+                <h1>Login</h1>
+                <form action="/" method="POST">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+
+                    <button type="submit" class="login-btn">Login</button>
+                </form>
+
+                <!-- Links for Create Account & Forgot Password -->
+                <div class="links">
+                    <p><a href="{{ url_for('create_account') }}">Create an account</a></p>
+                    <p><a href="{{ url_for('reset_password') }}">Forgot Password?</a></p>
+                </div>
+
+                <!-- Error Message -->
+                {% if error %}
+                    <p style="color:red; text-align: center;">{{ error }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Right Side: MRT Image -->
+        <div class="right"></div>
+    </div>
+</body>
+</html>

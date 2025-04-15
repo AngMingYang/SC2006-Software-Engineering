@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Congestion</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .apollo-icon {
+            height: 75px;
+            width: 75px;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            border-radius: 25%;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-left: 80px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        h2, h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        /* Table Styling */
+        .table-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 80%;
+            text-align: center;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-size: 1.1rem;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Form Styling */
+        .line-form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .line-form select {
+            padding: 8px;
+            margin-right: 10px;
+            font-size: 1rem;
+        }
+
+        .update-btn, .predict-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .update-btn:hover, .predict-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Diagram Image Styling */
+        .graph-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .mrt-map-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .mrt-map {
+            width: 90%; /* Wider map */
+            max-width: 2000px; /* Allow larger images */
+            height: auto;
+        }
+
+        /* Prediction Section */
+        .prediction-section {
+            margin-top: 30px;
+        }
+
+        .data-output {
+            white-space: pre-wrap;
+            font-size: 1rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="{{ url_for('static', filename='Apollo_11_icon.jpg') }}" alt="Apollo 11 Icon" class="apollo-icon">
+    <h1>Commuter Dashboard</h1>
+</header>
+
+<div class="container">
+    <h2>Real-Time Congestion</h2>
+
+    <!-- Form to select line and update data -->
+    <form method="POST" class="line-form">
+        <label for="line">Select Line:</label>
+        <select name="line" id="line">
+            <option value="EWL" {% if line == 'EWL' %}selected{% endif %}>EWL</option>
+            <option value="NSL" {% if line == 'NSL' %}selected{% endif %}>NSL</option>
+            <option value="CCL" {% if line == 'CCL' %}selected{% endif %}>CCL</option>
+            <option value="NEL" {% if line == 'NEL' %}selected{% endif %}>NEL</option>
+        </select>
+        <button type="submit" class="update-btn">Update</button>
+    </form>
+
+    <div class="data-section">
+        <h3>Real-Time Data:</h3>
+        <!-- Display real-time data in table format -->
+        {% if table_data %}
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Station</th>
+                        <th>Crowd Level</th>
+                    </tr>
+                    {% for station, crowd_level in table_data %}
+                        <tr>
+                            <td>{{ station }}</td>
+                            <td>{{ crowd_level }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% else %}
+            <p>{{ api_data }}</p>
+        {% endif %}
+    </div>
+
+    {% if plot_url %}
+        <div class="graph-section">
+            <h3>Real-Time Crowd Levels</h3>
+            <img src="data:image/png;base64,{{ plot_url }}" alt="Real-Time Crowd Levels" class="mrt-map">
+        </div>
+    {% endif %}
+
+    <div class="prediction-section">
+        <h3>Predicted Data:</h3>
+        <form method="POST" class="line-form">
+            <input type="hidden" name="line" value="{{ line }}">
+            <label for="pred_station">Select Station:</label>
+            <select name="pred_station" id="pred_station">
+                <option value="">-- All --</option>
+                {% for station in unique_stations %}
+                    <option value="{{ station }}" {% if station == selected_station %}selected{% endif %}>{{ station }}</option>
+                {% endfor %}
+            </select>
+    
+            <label for="pred_time">Select Time:</label>
+            <select name="pred_time" id="pred_time">
+                <option value="">-- All --</option>
+                {% for time in unique_times %}
+                    <option value="{{ time }}" {% if time == selected_time %}selected{% endif %}>{{ time }}</option>
+                {% endfor %}
+            </select>
+    
+            <button type="submit" name="predict_button" class="predict-btn">View Predicted Data</button>
+        </form>
+    
+        {% if filtered_predicted %}
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Station</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Crowd Level</th>
+                    </tr>
+                    {% for entry in filtered_predicted %}
+                        <tr>
+                            <td>{{ entry[1] }}</td>
+                            <td>{{ entry[2][11:16] }}</td>
+                            <td>{{ entry[3][11:16] if entry[3]|length >= 16 else '-' }}</td>
+                            <td>{{ entry[4] if entry|length > 4 else entry[3] }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% elif request.method == "POST" and "predict_button" in request.form %}
+            <p>No predicted data found for selected filters.</p>
+        {% endif %}
+    </div>
+
+    <div style="text-align: center; margin-top: 30px;">
+        <a href="{{ url_for('commuter_home') }}">
+            <button class="update-btn">Go Back</button>
+        </a>
+    </div>
+
+</div>
+
+
+<script>
+    // Poll the server every 5 seconds to check refresh status , because pushing notifications is too hard
+    setInterval(function() {
+        fetch("/commuter/should_refresh")
+            .then(response => response.json())
+            .then(data => {
+                if (data.refresh === true) {
+                    console.log("Refreshing due to server flag...");
+                    location.reload(); // Refresh the whole page
+                }
+            })
+            .catch(error => console.error("Error checking refresh status:", error));
+    }, 5000); // 5000 milliseconds = 5 second  
+</script>
+
+
+
+
+
+<p>Refresh seed: <span id="refresh-seed">{{ range(100000, 999999) | random }}</span></p>
+
+
+</body>
+</html>

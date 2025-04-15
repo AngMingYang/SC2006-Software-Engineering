@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congestion Calculation Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header>
+    <img src="{{ url_for('static', filename='Apollo_11_icon.jpg') }}" alt="Apollo 11 Icon" class="apollo-icon">
+    <h1>Commuter Dashboard</h1>
+</header>
+
+<main>
+    <div class="welcome">
+        <h2>Congestion Calculation Result</h2>
+        <p>Below are your calculated results:</p>
+    </div>
+
+    <div class="result-container">
+        <div class="result-item">
+            <h3>Shortest Path:</h3>
+            <p>{{ shortest_path }}</p>
+        </div>
+
+        <div class="result-item">
+            <h3>Estimated Time:</h3>
+            <p>{{ path_time }} minutes</p>
+        </div>
+    </div>
+
+    <div class="mrt-map-container">
+        <h3>Our MRT Map</h3>
+        <img src="{{ url_for('static', filename='MRT_map.jpg') }}" alt="MRT Map" class="mrt-map">
+    </div>
+
+    <div class="back-button-container">
+        <a href="{{ url_for('commuter_home') }}" class="button back-btn">Back to Commuter Home</a>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; SC2006 Group 1</p>
+</footer>
+
+</body>
+</html>

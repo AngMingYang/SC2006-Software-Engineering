@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commuter Historical Data</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header> 
+    <img src="{{ url_for('static', filename='Apollo_11_icon.jpg') }}" alt="Apollo 11 Icon" class="apollo-icon">
+    <h1>Commuter Historical Data</h1>
+</header>
+
+<main>
+    <div class="welcome">
+        <h2>Welcome {{ user }}!</h2>
+        <p>Choose your day type to view historical data.</p>
+    </div>
+
+    <!-- Day Type Selection -->
+    <form method="POST">
+        <div class="form-group">
+            <label for="day_type">Select Day Type:</label>
+            <select id="day_type" name="day_type">
+                <option value="WEEKDAY" {% if day_type == "WEEKDAY" %}selected{% endif %}>Weekday</option>
+                <option value="WEEKENDS/HOLIDAY" {% if day_type == "WEEKENDS/HOLIDAY" %}selected{% endif %}>Weekend/Holiday</option>
+            </select>
+        </div>
+        <button type="submit" class="button">Submit</button>
+    </form>
+
+    <div class="congestion-graph">
+        <h3>Congestion Graph for {{ day_type }}</h3>
+        {% if plot_url %}
+            <img src="data:image/png;base64,{{ plot_url }}" alt="Congestion Graph">
+        {% else %}
+            <p>Sorry, the graph could not be generated. Please try again later.</p>
+        {% endif %}
+    </div>
+    
+    
+
+    <!-- Go Back Button -->
+    <div class="back-button">
+        <a href="{{ url_for('commuter_home') }}" class="button">Go Back</a>
+    </div>
+    
+    <div class="logout-container">
+        <a href="{{ url_for('logout') }}" class="button logout-btn">Logout</a>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; SC2006 Group 1</p>
+</footer>
+
+</body>
+</html>

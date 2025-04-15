@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Route Finder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Enter Train Stations</h2>
+        <form id="trainForm">
+            <label for="startStation">Start Station:</label>
+            <input type="text" id="startStation" name="startStation" required>
+            
+            <label for="endStation">End Station:</label>
+            <input type="text" id="endStation" name="endStation" required>
+
+            <label for="hour">Time:</label>
+            <input type="text" id="hour" name="hour" required>
+            
+            <button type="submit">Find Route</button>
+        </form>
+        <p id="responseMessage"></p>
+
+        <h3>Congestion Heatmap</h3>
+        <img id="heatmap" src="{{ heatmap_url or '/static/congestion_heatmap.png' }}" alt="Congestion Heatmap" style="max-width: 100%; height: auto;">
+    </div>
+
+    <script>
+        document.getElementById("trainForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+    
+            const startStation = document.getElementById("startStation").value;
+            const endStation = document.getElementById("endStation").value;
+            const hour = document.getElementById("hour").value;
+    
+            fetch("/real_time_congestion/process", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ startStation, endStation, hour })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("responseMessage").innerText = data.message;
+                document.getElementById("heatmap").src = data.heatmap_url;  // Update heatmap
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+    
+</body>
+</html>

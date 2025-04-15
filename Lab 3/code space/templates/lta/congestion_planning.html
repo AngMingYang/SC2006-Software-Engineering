@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congestion Planning</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+<header>
+    <img src="{{ url_for('static', filename='Apollo_11_icon.jpg') }}" alt="Apollo 11 Icon" class="apollo-icon">
+    <h1>Congestion Planning for MRT System</h1>
+</header>
+
+<main>
+    <!-- Form to select day type and MRT line for congestion planning -->
+    <form method="POST" class="form-container">
+        <div class="form-group">
+            <label for="day_type">Select Day Type:</label>
+            <select name="day_type" id="day_type">
+                {% for d in ['WEEKDAY', 'WEEKENDS/HOLIDAY'] %}
+                    <option value="{{ d }}" {% if d == day_type %}selected{% endif %}>{{ d }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <div class="form-group">
+            <label for="line">Select MRT Line:</label>
+            <select name="line" id="line">
+                {% for line_option in ['ALL', 'EWL', 'NSL', 'CCL', 'NEL', 'DTL'] %}
+                    <option value="{{ line_option }}" {% if line_option == line %}selected{% endif %}>{{ line_option }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <button type="submit">Generate Graphs</button>
+    </form>
+
+    <h3>📊 Congestion Predictions Graph</h3>
+    {% if plot_url %}
+        <img src="data:image/png;base64,{{ plot_url }}" alt="Congestion Predictions Graph">
+    {% else %}
+        <p>Sorry, the congestion graph could not be generated. Please try again later.</p>
+    {% endif %}
+
+    <h3>📉 Train Frequency Graph</h3>
+    {% if plot_url2 %}
+        <img src="data:image/png;base64,{{ plot_url2 }}" alt="Train Frequency Graph">
+    {% else %}
+        <p>Sorry, the frequency graph could not be generated. Please try again later.</p>
+    {% endif %}
+
+    <h3>Assumptions: Train Capacities</h3>
+    <p>The following train capacities are used in the congestion predictions:</p>
+    <ul>
+        <li><strong>East-West Line (EW):</strong> 1920 passengers</li>
+        <li><strong>North-South Line (NS):</strong> 1920 passengers</li>
+        <li><strong>North-East Line (NE):</strong> 1920 passengers</li>
+        <li><strong>Circle Line (CC):</strong> 931 passengers</li>
+        <li><strong>Downtown Line (DT):</strong> 931 passengers</li>
+        <li><strong>Thomson-East Coast Line (TE):</strong> 1280 passengers</li>
+    </ul>
+    <p>Source: <a href="https://en.wikipedia.org/wiki/List_of_Singapore_MRT_and_LRT_rolling_stock" target="_blank">Wikipedia</a></p>
+
+    <div class="back-button-container">
+        <a href="{{ url_for('lta_home') }}" class="button">Return to LTA Home</a>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; SC2006 Group 1</p>
+    <a href="{{ url_for('logout') }}" style="color: white;">Logout</a>
+</footer>
+
+</body>
+</html>

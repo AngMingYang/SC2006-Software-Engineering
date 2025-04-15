@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>LTA Dashboard</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+<body>
+
+<header>
+    <img src="{{ url_for('static', filename='Apollo_11_icon.jpg') }}" alt="Apollo 11 Icon" class="apollo-icon">
+    <h1>LTA Manager Dashboard</h1>
+    <p>Welcome, {{ username }}</p>
+</header>
+
+<main>
+    <div class="content">
+        <div class="card">
+            <h3>Monthly Report</h3>
+            <p>View and analyze monthly transportation reports.</p>
+            <a href="{{ url_for('monthly_report') }}">Go to Monthly Report</a>
+        </div>
+
+        <div class="card">
+            <h3>Congestion Planning</h3>
+            <p>Plan and optimize congestion management strategies.</p>
+            <a href="{{ url_for('congestion_planning') }}">Go to Congestion Planning</a>
+        </div>
+
+        <div class="card">
+            <h3>Email Notifications</h3>
+            <p>Send important notifications to users.</p>
+            <a href="{{ url_for('email_functions') }}">Go to Email Functions</a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>&copy; SC2006 Group 1</p>
+    <a href="{{ url_for('logout') }}" style="color: white;">Logout</a>
+</footer>
+
+</body>
+</html>

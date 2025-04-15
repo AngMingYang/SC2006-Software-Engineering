@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commuter History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Add some styling for the buttons */
+        .logout-button, .back-button {
+            display: inline-block;
+            background-color: #0b0472; /* A contrasting color for the buttons */
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .logout-button:hover, .back-button:hover {
+            background-color: #0b0472; /* Slightly darker on hover */
+        }
+
+        .back-button {
+            background-color: #4CAF50; /* Green color for "Back" button */
+        }
+
+        .back-button:hover {
+            background-color: #45A049; /* Slightly darker green on hover */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome, {{ username }}!</h1>
+    </header>
+
+    <main>
+        {% if user_data %}
+            <h2>Your Travel History</h2>
+            <center>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Start Location</th>
+                        <th>End Location</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in user_data %}
+                        <tr>
+                            <td>{{ entry['Start_location'] }}</td>
+                            <td>{{ entry['End_location'] }}</td>
+                            <td>{{ entry['Date'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </center>
+        {% else %}
+            <p>{{ message }}</p>
+        {% endif %}
+    </main>
+
+    <footer>
+        <a href="{{ url_for('commuter_home') }}" class="back-button">Back to Commuter Home</a>
+        <a href="{{ url_for('logout') }}" class="logout-button">Logout</a>
+        <p>© 2025 Commuter System</p>
+    </footer>
+</body>
+</html>
